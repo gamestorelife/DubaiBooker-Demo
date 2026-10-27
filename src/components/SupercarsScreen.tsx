@@ -1,0 +1,154 @@
+import React from 'react';
+import { SUPERCARS_DATA, Supercar, CURRENCIES } from '../data/brokerData.ts';
+
+interface SupercarsScreenProps {
+  currency: keyof typeof CURRENCIES;
+  onSelectCar: (car: Supercar) => void;
+  onBackToOverview: () => void;
+}
+
+export const SupercarsScreen: React.FC<SupercarsScreenProps> = ({
+  currency,
+  onSelectCar,
+  onBackToOverview,
+}) => {
+  const curr = CURRENCIES[currency];
+
+  return (
+    <div className="py-10 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      {/* Top Breadcrumb & Return Button */}
+      <div className="flex items-center justify-between mb-8">
+        <button
+          onClick={onBackToOverview}
+          className="inline-flex items-center gap-2 text-xs font-semibold text-[#fbe396] hover:text-white transition-colors"
+        >
+          <i className="fa-solid fa-arrow-left"></i>
+          <span>Return to Gateway</span>
+        </button>
+
+        <div className="vip-status-pill text-[10px]">
+          <span className="pulse-dot"></span>
+          <span>ZERO-DEPOSIT BROKER GUARANTEE</span>
+        </div>
+      </div>
+
+      {/* Screen Header */}
+      <div className="text-center max-w-3xl mx-auto mb-12">
+        <div className="vip-status-pill mb-3">EXOTIC FLEET &amp; CHAUFFEURS</div>
+        <h1 className="font-playfair text-3xl sm:text-5xl font-bold text-white mb-4">
+          Rent a Supercar or Chauffeur Limousine
+        </h1>
+        <p className="text-sm sm:text-base text-[#9da3b4] leading-relaxed">
+          Rolls-Royce Cullinan, Lamborghini Revuelto, Ferrari Purosangue, and chauffeur-driven Mercedes Maybach. Direct broker garage allocation with zero security deposit headaches.
+        </p>
+      </div>
+
+      {/* Supercars Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {SUPERCARS_DATA.map((car) => {
+          const brokerRate = Math.round(car.brokerRateDayAed * curr.rate);
+          const retailRate = Math.round(car.retailRateDayAed * curr.rate);
+          const savings = retailRate - brokerRate;
+
+          return (
+            <div
+              key={car.id}
+              className="bg-gradient-to-b from-[#141724]/90 to-[#0d0f17]/95 border border-[#d4af37]/25 rounded-3xl overflow-hidden shadow-2xl transition-all hover:border-[#d4af37]/60 hover:-translate-y-1 flex flex-col group"
+            >
+              <div className="relative h-64 overflow-hidden">
+                <img
+                  src={car.image}
+                  alt={`${car.make} ${car.model}`}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0d0f17] via-black/20 to-transparent" />
+                
+                <div className="absolute top-4 left-4 bg-black/70 backdrop-blur-md border border-[#d4af37]/40 px-3 py-1 rounded-full text-[11px] font-bold text-[#fbe396] uppercase">
+                  {car.tag}
+                </div>
+
+                <div className="absolute top-4 right-4 bg-black/70 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[11px] font-bold text-white">
+                  <span>{car.year} Model</span>
+                </div>
+
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="text-xs uppercase tracking-wider text-[#d4af37] font-semibold">
+                    {car.category}
+                  </div>
+                  <h3 className="font-playfair text-2xl font-bold text-white">
+                    {car.make} {car.model}
+                  </h3>
+                </div>
+              </div>
+
+              <div className="p-6 sm:p-7 flex-grow flex flex-col justify-between">
+                <div>
+                  {/* Performance Specs */}
+                  <div className="grid grid-cols-3 gap-2.5 mb-5">
+                    <div className="bg-white/5 border border-white/10 rounded-xl p-2.5 text-center">
+                      <div className="text-[10px] uppercase text-neutral-400 font-semibold">Power</div>
+                      <div className="font-cinzel text-base font-bold text-[#fbe396]">{car.horsepower} HP</div>
+                    </div>
+                    <div className="bg-white/5 border border-white/10 rounded-xl p-2.5 text-center">
+                      <div className="text-[10px] uppercase text-neutral-400 font-semibold">0-100 KM/H</div>
+                      <div className="font-cinzel text-base font-bold text-[#fbe396]">{car.zeroToHundred}</div>
+                    </div>
+                    <div className="bg-white/5 border border-white/10 rounded-xl p-2.5 text-center">
+                      <div className="text-[10px] uppercase text-neutral-400 font-semibold">Top Speed</div>
+                      <div className="font-cinzel text-base font-bold text-[#fbe396]">{car.topSpeed}</div>
+                    </div>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed mb-5">
+                    {car.description}
+                  </p>
+
+                  <div className="space-y-2 mb-6">
+                    <div className="text-[11px] uppercase tracking-wider text-[#fbe396] font-semibold mb-2">
+                      Direct Broker Fleet Benefits
+                    </div>
+                    {car.perks.map((p, idx) => (
+                      <div key={idx} className="flex items-center gap-2 text-xs text-neutral-300">
+                        <i className="fa-solid fa-bolt text-[#d4af37] text-[10px]"></i>
+                        <span>{p}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-neutral-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <div className="text-[11px] text-neutral-400 uppercase tracking-wider font-semibold">
+                      Direct 24H Daily Rate
+                    </div>
+                    <div className="flex items-baseline gap-2">
+                      <span className="font-cinzel text-2xl font-bold gold-gradient-text tabular-nums">
+                        {curr.symbol} {brokerRate.toLocaleString()}
+                      </span>
+                      <span className="text-xs text-neutral-400">/ day</span>
+                    </div>
+                    <div className="text-[11px] text-neutral-500 line-through">
+                      Agency Rate: {curr.symbol} {retailRate.toLocaleString()} (Save {curr.symbol} {savings.toLocaleString()})
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => onSelectCar(car)}
+                    className="btn-gold-luxury px-6 py-3 text-xs font-bold flex items-center justify-center gap-2"
+                  >
+                    <span>Reserve Supercar</span>
+                    <i className="fa-solid fa-arrow-right text-[11px]"></i>
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+    </div>
+  );
+};

@@ -1,0 +1,6 @@
+{
+  "name": "Dubai Booker - VIP Concierge & Bookings Portal",
+  "description": "Elite VIP gateway for prime penthouses, ultra-luxury hotels, waterfront villas, supercar rentals, and VIP desert expeditions at direct broker rates in Dubai.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
